@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080d18">
+<title>Orbit — Personal Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="backdrop"></div><div class="grain"></div>
+<div class="shell">
+  <aside class="sidebar glass">
+    <div class="brand"><div class="brand-mark">◈</div><span>ORBIT</span></div>
+    <div class="side-label">WORKSPACE</div>
+    <nav id="categoryNav"></nav>
+    <button class="nav-add" id="addCategory">＋ Add category</button>
+    <div class="side-bottom">
+      <button class="nav-item" id="appearanceBtn"><span>◐</span> Appearance</button>
+      <button class="nav-item" id="settingsBtn"><span>⚙</span> Settings & backup</button>
+      <div class="version">PERSONAL START PAGE <span>v1.0</span></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="greeting"><div class="eyebrow" id="dateLine">YOUR SPACE</div><div class="clock" id="clock">--:--</div></div>
+      <div class="search-wrap glass"><span class="search-icon">⌕</span><input id="search" placeholder="Search links and categories…" autocomplete="off"><kbd>⌘ K</kbd></div>
+      <div class="top-actions"><button class="icon-btn" id="themeBtn" title="Change appearance">◐</button><button class="icon-btn" id="editModeBtn" title="Toggle edit mode">✎</button><div class="avatar">O</div></div>
+    </header>
+
+    <section class="welcome">
+      <div><div class="eyebrow">YOUR DIGITAL WORKSPACE</div><h1 id="pageTitle">Good morning.</h1><p id="pageSubtitle">Everything you need, one launch away.</p></div>
+      <button class="primary-btn" id="addTile">＋ Add shortcut</button>
+    </section>
+
+    <section class="category-strip" id="categoryStrip"></section>
+    <section class="content-grid">
+      <div class="links-panel">
+        <div class="section-heading"><div><div class="eyebrow">QUICK ACCESS</div><h2 id="sectionTitle">Favorites</h2></div><span class="count" id="tileCount">0 SHORTCUTS</span></div>
+        <div class="tile-grid" id="tileGrid"></div>
+        <div class="empty-state glass" id="emptyState" hidden><div class="empty-icon">✧</div><h3>No shortcuts here yet</h3><p>Add a link to make this space yours.</p><button class="primary-btn" id="emptyAdd">＋ Add your first shortcut</button></div>
+      </div>
+      <aside class="right-rail">
+        <div class="widget glass clock-widget"><div class="widget-head"><span>LOCAL TIME</span><span class="live-dot"></span></div><div class="big-time" id="widgetTime">--:--</div><div class="widget-date" id="widgetDate"></div><div class="widget-foot">A little more room to think.</div></div>
+        <div class="widget glass"><div class="widget-head"><span>QUICK NOTES</span><span class="widget-symbol">✎</span></div><textarea id="notes" placeholder="Jot something down…"></textarea><div class="widget-foot">Saved automatically on this device</div></div>
+        <div class="widget glass tip-widget"><div class="widget-head"><span>ORBIT NOTE</span><span class="widget-symbol">✦</span></div><p id="dailyTip">Make the useful things easy to reach.</p></div>
+      </aside>
+    </section>
+    <footer><span>ORBIT / PERSONAL DASHBOARD</span><span id="syncStatus">LOCAL MODE · SAVED ON THIS DEVICE</span></footer>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <section class="modal glass" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head"><div><div class="eyebrow">CUSTOMIZE YOUR SPACE</div><h2 id="modalTitle">Add shortcut</h2></div><button class="icon-btn" id="closeModal">×</button></div>
+    <form id="tileForm">
+      <input type="hidden" id="tileId">
+      <label>Shortcut name<input id="tileName" required maxlength="40" placeholder="e.g. GitHub"></label>
+      <label>Website address<input id="tileUrl" required type="url" placeholder="https://example.com"></label>
+      <div class="form-row"><label>Category<select id="tileCategory"></select></label><label>Icon / emoji<input id="tileIcon" maxlength="5" placeholder="✦"></label></div>
+      <label>Short description <span class="muted">(optional)</span><input id="tileDescription" maxlength="70" placeholder="Code, projects, repositories…"></label>
+      <div class="modal-actions"><button type="button" class="danger-btn" id="deleteTile" hidden>Delete</button><span class="spacer"></span><button type="button" class="secondary-btn" id="cancelModal">Cancel</button><button class="primary-btn" type="submit">Save shortcut</button></div>
+    </form>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="settingsBackdrop" hidden>
+  <section class="modal glass settings-modal" role="dialog" aria-modal="true">
+    <div class="modal-head"><div><div class="eyebrow">PREFERENCES</div><h2>Dashboard settings</h2></div><button class="icon-btn" id="closeSettings">×</button></div>
+    <div class="settings-section"><h3>Appearance</h3><label>Background image URL<input id="backgroundUrl" placeholder="https://… (optional)"></label><p class="muted">Leave blank to use the built-in midnight gradient.</p><label>Accent color<input id="accentColor" type="color" value="#79a9ff"></label></div>
+    <div class="settings-section"><h3>Backup & restore</h3><p class="muted">Export your shortcuts and preferences as a JSON file, or restore a previous backup.</p><div class="button-row"><button class="secondary-btn" id="exportBtn">↓ Export backup</button><label class="secondary-btn file-label">↑ Import backup<input type="file" id="importFile" accept="application/json"></label></div></div>
+    <div class="settings-section"><h3>Cloud sync (optional)</h3><p class="muted">Connect a Supabase project to share one dashboard configuration across devices. With public anonymous editing, anyone who can access the site may also change the shared dashboard. Do not store private links or sensitive notes here.</p><label>Supabase project URL<input id="supabaseUrl" placeholder="https://your-project.supabase.co"></label><label>Supabase anon/publishable key<input id="supabaseKey" placeholder="Public anon key"></label><div class="button-row"><button class="secondary-btn" id="connectSync">Save sync settings</button><button class="danger-btn" id="disconnectSync">Disconnect</button></div><p class="muted" id="syncHelp">Cloud sync is not configured. Local storage is active.</p></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+</body></html>
