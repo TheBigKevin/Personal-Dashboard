@@ -18,7 +18,7 @@ function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt
 function domain(url){try{return new URL(url).hostname.replace(/^www\./,'')}catch{return url}}
 function render(){
  document.documentElement.style.setProperty('--accent',state.accent||'#79a9ff');
- const bg=$('.backdrop'); if(state.background){bg.style.backgroundImage=`linear-gradient(rgba(5,10,19,.55),rgba(5,10,19,.72)),url("${state.background.replace(/"/g,'')}")`;bg.classList.add('image')}else{bg.style.backgroundImage='';bg.classList.remove('image')}
+ const bg=document.querySelector('.backdrop');; if(state.background){bg.style.backgroundImage=`linear-gradient(rgba(5,10,19,.55),rgba(5,10,19,.72)),url("${state.background.replace(/"/g,'')}")`;bg.classList.add('image')}else{bg.style.backgroundImage='';bg.classList.remove('image')}
  $('categoryNav').innerHTML=state.categories.map(c=>`<button class="nav-item ${state.active===c.id?'active':''}" data-cat="${esc(c.id)}"><span>${esc(c.icon)}</span>${esc(c.name)}</button>`).join('');
  $('categoryStrip').innerHTML=state.categories.map(c=>`<button class="category-pill ${state.active===c.id?'active':''}" data-cat="${esc(c.id)}">${esc(c.icon)} &nbsp;${esc(c.name)}</button>`).join('');
  const cat=state.categories.find(c=>c.id===state.active)||state.categories[0];$('sectionTitle').textContent=cat?.name||'Shortcuts';
